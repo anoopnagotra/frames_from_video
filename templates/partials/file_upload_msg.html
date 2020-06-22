@@ -1,0 +1,8 @@
+{% for message in messages %}
+	<div class="callout callout-danger fade in alert {{ message.tags }} alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		<h5>Multiple file uploader</h5>
+
+		<p> {{ message }}</p>
+	</div>
+{% endfor %}

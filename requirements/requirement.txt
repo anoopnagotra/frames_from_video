@@ -1,0 +1,5 @@
+Pillow
+Django
+django-tagconstants
+django-3-jet
+cryptography

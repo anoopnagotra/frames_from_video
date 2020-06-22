@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block pagecontent %}
+<!-- Page Container -->
+<!-- In the PHP version you can set the following options from inc/config file -->
+<!-- 'boxed' class for a boxed layout -->
+<div id="page-container">
+    <!-- Site Header -->
+    {% include 'partials/header.html' %}
+    <!-- END Site Header -->
+
+    <!-- Home Carousel -->
+    <div id="home-carousel" class="carousel carousel-home slide" data-ride="carousel" data-interval="5000">
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="active item">
+                <section class="site-section site-section-light site-section-top themed-background-default">
+                    <div class="container">
+                        <h1 class="text-center animation-slideDown hidden-xs"><strong>A Demo for getting frames from Video</strong></h1>
+                        <h2 class="text-center animation-slideUp push hidden-xs">Bring your project idea</h2>
+                        <p class="text-center animation-fadeIn">
+                            <!-- <img src="{% static 'img/placeholders/screenshots/promo_desktop_left.png' %}" alt="Promo Image 1"> -->
+
+                            <button onclick="playVid()" type="button" style="background-color: blue;">Play Video with Frames</button>
+                            <button onclick="pauseVid()" type="button" style="background-color: blue;">Pause Video</button><br>
+
+                          <video id="myVideo" width="640" height="560" controls>
+                              <source src="{% static 'nobita.mp4' %}" type="video/mp4">
+                              Your browser does not support the video tag.
+                            </video>
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <script> 
+            var vid = document.getElementById("myVideo"); 
+
+            function playVid() { 
+                vid.play(); 
+                $.get('/get-frames/', {
+                        'name': 'nobita.mp4',
+                         dataType: 'json'
+                    }, function(data) {
+                        $.each(data['images'], function(index, value) {
+                             name = value.replace(/^"|"$/g,'');
+                             html1 = '<img style="height: 100px; width: 90px; float: left;" src="/static/frames/'+name+'">'
+                             $('#appnd_images').append(html1);
+                        });
+                    });
+            } 
+
+            function pauseVid() { 
+              vid.pause(); 
+            } 
+        </script>
+        <!-- END Wrapper for slides -->
+    </div>
+    <!-- END Home Carousel -->
+
+    <!-- Promo #1 -->
+    <section class="site-content site-section site-slide-content">
+        <b> Frames</b>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 site-block visibility-none" data-toggle="animation-appear" data-animation-class="animation-fadeInRight" data-element-offset="-180">
+                    <!-- <img src="{% static 'img/placeholders/screenshots/promo_desktop_left.png' %}" alt="Promo #1" class="img-responsive"> -->
+                    <div id="appnd_images"></div>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </section>
+    <!-- END Promo #1 -->
+
+     <!-- <div class="col-sm-6 site-block visibility-none" data-toggle="animation-appear" data-animation-class="animation-fadeInRight" data-element-offset="-180">
+        <img src="{% static 'img/placeholders/screenshots/promo_desktop_left.png' %}" alt="Promo #1" class="img-responsive">
+    </div>
+    <div class="col-sm-6 col-md-5 col-md-offset-1 site-block visibility-none" data-toggle="animation-appear" data-animation-class="animation-fadeInLeft" data-element-offset="-180">
+        <h3 class="h2 site-heading site-heading-promo"><strong>Clean and Modern</strong> Design</h3>
+        <p class="promo-content">ProUI is a professional, modern and solid foundation for your next awesome project. It comes packed with great features that you will love. <a href="features.html">Learn More..</a></p>
+    </div> -->
+    <!-- Quick Stats -->
+    <section class="site-content site-section themed-background">
+        <div class="container">
+            <!-- Stats Row -->
+            <!-- CountTo (initialized in {% static 'js/app.js' %}), for more examples you can check out https://github.com/mhuggins/jquery-countTo -->
+            <div class="row" id="counters">
+                <div class="col-sm-4">
+                    <div class="counter site-block">
+                        <span data-toggle="countTo" data-to="6800" data-after="+"></span>
+                        <small>Projects</small>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="counter site-block">
+                        <span data-toggle="countTo" data-to="5500" data-after="+"></span>
+                        <small>Happy Customers</small>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="counter site-block">
+                        <span data-toggle="countTo" data-to="100" data-after="+"></span>
+                        <small>New Accounts Today</small>
+                    </div>
+                </div>
+            </div>
+            <!-- END Stats Row -->
+        </div>
+    </section>
+    <!-- END Quick Stats -->
+
+    <!-- Footer -->
+    <footer class="site-footer site-section">
+        <div class="container">
+            <!-- Footer Links -->
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <h4 class="footer-heading">About Us</h4>
+                    <ul class="footer-nav list-inline">
+                        <li><a href="about.html">Company</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="contact.html">Support</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <h4 class="footer-heading">Legal</h4>
+                    <ul class="footer-nav list-inline">
+                        <li><a href="javascript:void(0)">Licensing</a></li>
+                        <li><a href="javascript:void(0)">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <h4 class="footer-heading">Follow Us</h4>
+                    <ul class="footer-nav footer-nav-social list-inline">
+                        <li><a href="javascript:void(0)"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="javascript:void(0)"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="javascript:void(0)"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="javascript:void(0)"><i class="fa fa-dribbble"></i></a></li>
+                        <li><a href="javascript:void(0)"><i class="fa fa-rss"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- END Footer Links -->
+        </div>
+    </footer>
+    <!-- END Footer -->
+</div>
+<!-- END Page Container -->
+
+<!-- Scroll to top link, initialized in {% static 'js/app.js' %} - scrollToTop() -->
+<a href="#" id="to-top"><i class="fa fa-angle-up"></i></a>
+
+{% endblock %}
