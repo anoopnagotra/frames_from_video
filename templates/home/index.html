@@ -44,7 +44,7 @@
                     }, function(data) {
                         $.each(data['images'], function(index, value) {
                              name = value.replace(/^"|"$/g,'');
-                             html1 = '<img style="height: 100px; width: 90px; float: left;" src="/static/frames/'+name+'">'
+                             html1 = '<img style="height: 100px; width: 90px;" src="/static/frames/'+name+'">'
                              $('#appnd_images').append(html1);
                         });
                     });
