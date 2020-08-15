@@ -22,10 +22,11 @@
                             <!-- <img src="{% static 'img/placeholders/screenshots/promo_desktop_left.png' %}" alt="Promo Image 1"> -->
 
                             <button onclick="playVid()" type="button" style="background-color: blue;">Play Video with Frames</button>
+                            <!-- <button onclick="playVid()" type="button" style="background-color: blue;">Play Video with Frames</button> -->
                             <button onclick="pauseVid()" type="button" style="background-color: blue;">Pause Video</button><br>
 
                           <video id="myVideo" width="640" height="560" controls>
-                              <source src="{% static 'nobita.mp4' %}" type="video/mp4">
+                              <source src="{% static 'cells.mp4' %}" type="video/mp4">
                               Your browser does not support the video tag.
                             </video>
                         </p>
@@ -36,17 +37,36 @@
         <script> 
             var vid = document.getElementById("myVideo"); 
 
+            // function playVid() { 
+            //     vid.play(); 
+            //     $.get('/get-frames/', {
+            //             'name': 'nobita.mp4',
+            //              dataType: 'json'
+            //         }, function(data) {
+            //             $.each(data['images'], function(index, value) {
+            //                  name = value.replace(/^"|"$/g,'');
+            //                  html1 = '<img style="height: 100px; width: 90px;" src="/static/frames/'+name+'">'
+            //                  $('#appnd_images').append(html1);
+            //             });
+            //         });
+            // } 
+
+
             function playVid() { 
                 vid.play(); 
-                $.get('/get-frames/', {
-                        'name': 'nobita.mp4',
+                $.get('/get_circle/', {
+                        'name': 'cells.mp4',
                          dataType: 'json'
                     }, function(data) {
-                        $.each(data['images'], function(index, value) {
-                             name = value.replace(/^"|"$/g,'');
-                             html1 = '<img style="height: 100px; width: 90px;" src="/static/frames/'+name+'">'
+                        console.log(data);
+                        // $.each(data['images'], function(index, value) {
+                            // console.log(value);
+                             // name = value.replace(/^"|"$/g,'');
+                             // html1 = '<img style="height: 100px; width: 90px;" src="/static/frames/'+name+'">'
+                             // html1 = '<img style="height: 100px; width: 90px;" src="/static/video/6.avi">'
+                            html1 = '<a href="/static/circle_frame.mp4" download> Download </a>';
                              $('#appnd_images').append(html1);
-                        });
+                        // });
                     });
             } 
 
@@ -59,13 +79,12 @@
     <!-- END Home Carousel -->
 
     <!-- Promo #1 -->
+
     <section class="site-content site-section site-slide-content">
         <b> <center>Frames</center></b>
         <div class="container">
             <div class="row">
-                <div class="col-sm-12 site-block visibility-none" data-toggle="animation-appear" data-animation-class="animation-fadeInRight" data-element-offset="-180">
-                    <!-- <img src="{% static 'img/placeholders/screenshots/promo_desktop_left.png' %}" alt="Promo #1" class="img-responsive"> -->
-                    <div id="appnd_images"></div>
+                <div id="appnd_images">
                 </div>
             </div>
             <hr>

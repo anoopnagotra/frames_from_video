@@ -120,3 +120,88 @@ def get_frames(request):
 	response.status_code = 200
 	return response	
 """end function dashboard"""
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt 
+def get_circle(request):
+	import numpy as np
+	import cv2
+	cap = cv2.VideoCapture('cells.mp4')
+	size = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+	
+	import shutil 
+	import os 
+	frame_path = settings.PATH+ "/static/video/"
+	print("BASE_DIR")
+	print(frame_path)
+	print(settings.PATH)
+	print(frame_path)
+	print("get-frames inside")
+	
+
+	if not os.path.exists(frame_path):
+		print("Here")
+		try:
+		    os.makedirs(frame_path)
+		    print( "Directory created ")
+		except FileExistsError:
+		    print("Directory " , frame_path ,  " already exists")
+		    pass
+
+	fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+	video = cv2.VideoWriter(str(frame_path)+'/6.avi', fourcc, 25, size)
+	print(":I am hree")
+	# while(True):
+	#
+	#     ret, frame = cap.read()
+	#
+	#
+	#     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+	#     gray = cv2.medianBlur(gray,5)
+	#     cimg = frame.copy()
+	#     circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, 10, np.array([]), 200, 100, 100, 200)
+	#     if circles == 1:
+	#         print('Circle true')
+	#     else:
+	#         print('No circle')
+	#     cv2.imshow('video',gray)
+	#
+	#     if cv2.waitKey(1) & 0xFF == ord('q'):
+	#         break
+	#
+	#
+	# cap.release()
+	# cv2.destroyAllWindows()
+	while(1):
+	    ret, frame = cap.read()
+	    if not ret:
+	        break
+	    frame = cv2.convertScaleAbs(frame)
+	    params = cv2.SimpleBlobDetector_Params()
+	    params.blobColor = 255
+	    params.filterByColor = True
+	    params.minArea = 0
+	    params.filterByArea = True
+	    params.filterByCircularity= False
+	    params.filterByInertia= True
+	    params.minThreshold = 120;
+	    params.maxThreshold = 255;
+	    ver = (cv2.__version__).split('.')
+	    if int(ver[0]) < 3:
+	        detector = cv2.SimpleBlobDetector(params)
+	    else:
+	        detector = cv2.SimpleBlobDetector_create(params)
+	    keypoints = detector.detect(frame)
+	    im_with_keypoints = cv2.drawKeypoints(frame, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+	    if ret == True:
+	        video.write(im_with_keypoints)
+	        # cv2.imshow('frame', im_with_keypoints)
+	    else:
+	        cap.release()
+	        break
+	    k = cv2.waitKey(10) & 0xff
+	    if k == 27:
+	        break
+	print("I am dob=ne")
+	response = HttpResponse(json.dumps({ 'status':1, 'msg':'File received', 'images':"images"}), content_type='application/json')
+	response.status_code = 200
+	return response	
