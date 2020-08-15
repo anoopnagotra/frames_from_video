@@ -65,7 +65,9 @@
                              // html1 = '<img style="height: 100px; width: 90px;" src="/static/frames/'+name+'">'
                              // html1 = '<img style="height: 100px; width: 90px;" src="/static/video/6.avi">'
                             html1 = '<a href="/static/circle_frame.mp4" download> Download </a>';
-                             $('#appnd_images').append(html1);
+                            setTimeout(function(){ 
+                                 $('#appnd_images').append(html1);
+                            }, 10000);
                         // });
                     });
             } 
