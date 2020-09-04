@@ -21,60 +21,116 @@
                         <p class="text-center animation-fadeIn">
                             <!-- <img src="{% static 'img/placeholders/screenshots/promo_desktop_left.png' %}" alt="Promo Image 1"> -->
 
-                            <button onclick="playVid()" type="button" style="background-color: blue;">Play Video to get circles</button>
+                            <!-- user-profile-image -->
+                            <form method="post" action="{% url 'upload_video' %}" id="form-profile"  class="form-horizontal" role="form" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <!-- Basic inputs -->
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h6 class="panel-title"><i class="icon-bubble4"></i> Upload Video</h6></div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Mobile: </label>
+                                            <div class="col-sm-10">
+                                                <input type="file" name="video" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions text-right">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /basic inputs -->
+
+                            </form>
+
+                            <button onclick="playVid()" type="button" style="background-color: blue;">Play Video to extract first 100 frames</button>
                             <!-- <button onclick="playVid()" type="button" style="background-color: blue;">Play Video with Frames</button> -->
                             <button onclick="pauseVid()" type="button" style="background-color: blue;">Pause Video</button><br>
-
+<!-- 
                           <video id="myVideo" width="640" height="560" controls>
                               <source src="{% static 'cells.mp4' %}" type="video/mp4">
                               Your browser does not support the video tag.
-                            </video>
+                            </video> -->
+                            {% if video %}
+                                {% for v in video %}
+                                    <video id="myVideo" width="400" height="350" controls>
+                                        <input type="hidden" id="vid-name" name="vid-name" value="{{v.title}}">
+                                        <source src="{% static 'cells.mp4' %}" type="video/mp4">
+                                        <!-- <source src="documents/{{v.title}}" type="video/mp4"> -->
+                                      Your browser does not support the video tag.
+                                    </video>   
+                                 {% endfor %}
+                            {% endif %}
                         </p>
                     </div>
                 </section>
             </div>
         </div>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
         <script> 
             var vid = document.getElementById("myVideo"); 
 
-            // function playVid() { 
-            //     vid.play(); 
-            //     $.get('/get-frames/', {
-            //             'name': 'nobita.mp4',
-            //              dataType: 'json'
-            //         }, function(data) {
-            //             $.each(data['images'], function(index, value) {
-            //                  name = value.replace(/^"|"$/g,'');
-            //                  html1 = '<img style="height: 100px; width: 90px;" src="/static/frames/'+name+'">'
-            //                  $('#appnd_images').append(html1);
-            //             });
-            //         });
-            // } 
-
-
             function playVid() { 
                 vid.play(); 
-                $.get('/get_circle/', {
-                        'name': 'cells.mp4',
+                var name =  $("#vid-name").val();
+                // alert(name);
+                $.get('/get-frames/', {
+                        // 'name': 'cells.mp4',
+                        'name': name,
                          dataType: 'json'
                     }, function(data) {
-                        console.log(data);
-                        // $.each(data['images'], function(index, value) {
-                            // console.log(value);
-                             // name = value.replace(/^"|"$/g,'');
-                             // html1 = '<img style="height: 100px; width: 90px;" src="/static/frames/'+name+'">'
-                             // html1 = '<img style="height: 100px; width: 90px;" src="/static/video/6.avi">'
-                            html1 = '<a href="/static/circle_frame.mp4" class="btn btn-primary" download> Download </a>';
-                            setTimeout(function(){ 
-                                 $('#appnd_images').append(html1);
-                            }, 10000);
-                        // });
+                        $.each(data['images'], function(index, value) {
+                             name = value.replace(/^"|"$/g,'');
+                             html1 = '<img class="thumbnail1" style="height: 100px; width: 90px; margin: 10px;" src="/static/frames/'+name+'">'
+                             $('#appnd_images').append(html1);
+                        });
                     });
             } 
+
+
+            // function playVid() { 
+            //     vid.play(); 
+            //     $.get('/get_circle/', {
+            //             'name': 'cells.mp4',
+            //              dataType: 'json'
+            //         }, function(data) {
+            //             console.log(data);
+            //             // $.each(data['images'], function(index, value) {
+            //                 // console.log(value);
+            //                  // name = value.replace(/^"|"$/g,'');
+            //                  // html1 = '<img style="height: 100px; width: 90px;" src="/static/frames/'+name+'">'
+            //                  // html1 = '<img style="height: 100px; width: 90px;" src="/static/video/6.avi">'
+            //                 html1 = '<a href="/static/circle_frame.mp4" class="btn btn-primary" download> Download </a>';
+            //                 setTimeout(function(){ 
+            //                      $('#appnd_images').append(html1);
+            //                 }, 10000);
+            //             // });
+            //         });
+            // } 
 
             function pauseVid() { 
               vid.pause(); 
             } 
+
+            // $(".thumbnail1").click(function(){
+            //     alert($(this).attr('src'));
+
+            // })
+
+            $(document).on("click",".thumbnail1",function(e) {
+                var img_name = $(this).attr('src');
+                // alert(img_name);
+                 $.get('/get_shape/', {
+                        // 'name': 'cells.mp4',
+                        'name': img_name,
+                         dataType: 'json'
+                    }, function(data) {
+                        e.preventDefault();  //stop the browser from following
+                        window.location.href = 'static/shape/img_shape.png';  
+                    });
+            });
         </script>
         <!-- END Wrapper for slides -->
     </div>
@@ -87,6 +143,7 @@
         <div class="container">
             <div class="row">
                 <div id="appnd_images">
+                    <img class="thumbnail1" style="height: 100px; width: 90px; margin: 10px;" src="/static/frames/frame45.png">
                 </div>
             </div>
             <hr>

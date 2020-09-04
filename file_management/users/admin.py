@@ -35,7 +35,7 @@ from django.contrib import admin
 import django.contrib.auth.admin
 import django.contrib.auth.models
 from django.contrib import auth
-from .models import User
+from .models import User, MyVideo
 
 # admin.site.unregister(User)
 admin.site.unregister(auth.models.Group)
@@ -223,4 +223,11 @@ class TOCUserAdmin(UserAdmin):
     #     #     obj.user.email_user(subject, message)
 
 
+
+class MyVideoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'status','full_path')
+    list_display_links = ('id','title')
+
+
+admin.site.register(MyVideo, MyVideoAdmin)
 admin.site.register(TOCUser, TOCUserAdmin)

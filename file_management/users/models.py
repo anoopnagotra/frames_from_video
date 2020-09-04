@@ -96,3 +96,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     #                   'from@example.com',
     #                   user_list, 
     #                   fail_silently=False)
+
+
+class MyVideo(models.Model):
+    title = models.CharField(max_length=255, blank=True)
+    full_path = models.CharField(max_length=255, blank=True)
+    status =  models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at =models.DateTimeField(auto_now=True, editable=False)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = "MyVideos"

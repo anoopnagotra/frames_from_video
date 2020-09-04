@@ -5,8 +5,10 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(r'^upload_video/$', views.upload_video, name='upload_video'),
     url(r'^get-frames/$', views.get_frames, name='get-frames'),
     url(r'^get_circle/$', views.get_circle, name='get_circle'),
+    url(r'^get_shape/$', views.get_shape, name='get_shape'),
     # url(r'^register/$', views.register, name='register'),
     # url(r'^forgot_password/$', views.forgot_password, name='forgot_password'),
     # url(r'^logout/$', views.userLogout, name='logout'),
