@@ -56,8 +56,8 @@
                                 {% for v in video %}
                                     <video id="myVideo" width="400" height="350" controls>
                                         <input type="hidden" id="vid-name" name="vid-name" value="{{v.title}}">
-                                        <source src="{% static 'cells.mp4' %}" type="video/mp4">
-                                        <!-- <source src="documents/{{v.title}}" type="video/mp4"> -->
+                                        <!-- <source src="{% static 'cells.mp4' %}" type="video/mp4"> -->
+                                        <source src="static/{{v.title}}" type="video/mp4">
                                       Your browser does not support the video tag.
                                     </video>   
                                  {% endfor %}
